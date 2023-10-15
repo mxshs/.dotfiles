@@ -1,0 +1,7 @@
+[Desktop Entry]
+Type=XSession
+Exec=env KDEWM=/usr/bin/i3 --shmlog-size=26214400 /usr/bin/startplasma-x11
+DesktopNames=KDE
+Name=Plasma + I3WM
+Comment=Plasma + I3WM (XSession)
+
