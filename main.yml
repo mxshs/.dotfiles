@@ -1,0 +1,68 @@
+---
+- name: "conf nvim"
+  hosts: localhost
+  vars:
+    ansible_become_password:
+  tasks:
+    - name: "Download nvim"
+      ansible.builtin.get_url:
+        url: https://github.com/neovim/neovim/releases/latest/download/nvim.appimage
+        dest: /home/mxk/nvim.appimage
+        owner: mxk
+        mode: '0755'
+
+    - name: "Install nvim"
+      ansible.builtin.command: "{{ item }}"
+      with_items:
+        - "./nvim.appimage --appimage-extract"
+        - "mv squashfs-root /"
+        - "ln -s /squashfs-root/AppRun /usr/bin/nvim"
+      become: yes
+      args:
+        chdir: /home/mxk
+        creates: /usr/bin/nvim
+
+    - name: "Create nvim config folder"
+      ansible.builtin.file:
+        mode: '0755'
+        path: /home/mxk/.config/nvim
+        state: directory
+    
+    - name: "Configure nvim"
+      ansible.builtin.copy:
+        dest: /home/mxk/.config
+        src: /home/mxk/dev/.dotfiles/nvim
+        mode: '0755'
+
+- name: "conf zsh"
+  hosts: localhost
+  tasks:
+    - name: "Install zsh"
+      ansible.builtin.package:
+        name: zsh
+        state: present
+      become: yes
+
+    - name: "Check if omz is present"
+      stat:
+        path: "/home/mxk/.oh-my-zsh"
+      register: omz
+
+    - name: "Download oh-my-zsh"
+      ansible.builtin.get_url:
+        url: https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh
+        dest: .
+      when: not omz.stat.exists
+    
+    - name: "Run omz install script"
+      shell: |
+        sh install.sh
+        rm install.sh
+      when: not omz.stat.exists
+
+    - name: "Install p10k"
+      shell: |
+        git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ~/powerlevel10k
+        echo 'source ~/.p10k.zsh' >> ~/.zshrc
+        echo 'source ~/powerlevel10k/powerlevel10k.zsh-theme' >> ~/.zshrc
+
