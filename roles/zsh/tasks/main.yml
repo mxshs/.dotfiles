@@ -1,0 +1,33 @@
+- name: "zsh | Install"
+  ansible.builtin.package:
+    name: zsh
+    state: present
+  become: yes
+
+- name: "omz | Is present?"
+  stat:
+    path: "/home/mxk/.oh-my-zsh"
+  register: omz
+
+- name: "omz | Download"
+  ansible.builtin.get_url:
+    url: https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh
+    dest: .
+  when: not omz.stat.exists
+
+- name: "omz | Install"
+  shell: |
+    sh install.sh
+    rm install.sh
+  when: not omz.stat.exists
+
+- name: "p10k | Install"
+  shell: |
+    git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ~/powerlevel10k
+    echo 'source ~/powerlevel10k/powerlevel10k.zsh-theme' >> ~/.zshrc
+    echo 'source ~/.p10k.zsh' >> ~/.zshrc
+
+- name: "p10k | Configure"
+  ansible.builtin.copy:
+    dest: /home/mxk
+    src: .p10k.zsh

@@ -1,0 +1,32 @@
+---
+- name: "Nvim | Download"
+  ansible.builtin.get_url:
+    url: https://github.com/neovim/neovim/releases/latest/download/nvim.appimage
+    dest: . 
+    owner: mxk
+    mode: '0755'
+
+- name: "Nvim | Install"
+  ansible.builtin.command: "{{ item }}"
+  with_items:
+    - "./nvim.appimage --appimage-extract"
+    - "mv squashfs-root /"
+    - "ln -s /squashfs-root/AppRun /usr/bin/nvim"
+    - "rm nvim.appimage"
+  become: yes
+  args:
+    #chdir: /home/mxk
+    creates: /usr/bin/nvim
+
+- name: "Nvim | Create config folder"
+  ansible.builtin.file:
+    mode: '0755'
+    path: /home/mxk/.config/nvim
+    state: directory
+
+- name: "Nvim | Drop configuration"
+  ansible.builtin.copy:
+    dest: /home/mxk/.config
+    src: nvim
+    mode: '0755'
+
