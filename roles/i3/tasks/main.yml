@@ -1,0 +1,19 @@
+---
+- name: "i3 | Install"
+  anisble.builtin.package:
+    name: i3
+    state: present
+  become: true
+
+- name: "i3 | Create config folder"
+  ansible.builtin.file:
+    mode: '0755'
+    path: /home/mxk/.config/i3
+    state: directory
+
+- name: "i3 | Drop configuration"
+  ansible.builtin.copy:
+    dest: /home/mxk/.config/i3
+    src: i3/config
+    mode: '0755'
+

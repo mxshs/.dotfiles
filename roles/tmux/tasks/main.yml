@@ -1,0 +1,24 @@
+---
+- name: "Tmux | Install dependencies"
+  ansible.builtin.package:
+    name:
+      - libevent-dev
+      - ncurses-dev
+      - build-essential
+      - bison
+      - pkg-config
+    state: present
+  become: true
+
+- name: "Tmux | Install"
+  ansible.builtin.package:
+    name: tmux
+    state: present
+  become: true
+
+- name: "Tmux | Configure"
+  ansible.builtin.copy:
+    src: .tmux.conf
+    dest: /home/mxk/.tmux/
+    mode: 0755
+
