@@ -1,9 +1,10 @@
-local lsp = require('lsp-zero').preset({})
+local lspconfig = require('lspconfig')
 
-lsp.on_attach(function(client, bufnr)
-    -- lsp.default_keymaps({buffer = bufnr})
+vim.api.nvim_create_autocmd('LspAttach', {
+  group = vim.api.nvim_create_augroup('UserLspConfig', {}),
+  callback = function(ev)
 
-    local opts = { buffer = bufnr, remap = false }
+    local opts = { buffer = ev.bufnr, remap = false }
     vim.keymap.set('n', 'gD', vim.lsp.buf.declaration, opts)
     vim.keymap.set('n', 'gd', vim.lsp.buf.definition, opts)
     vim.keymap.set('n', 'K', vim.lsp.buf.hover, opts)
@@ -21,7 +22,52 @@ lsp.on_attach(function(client, bufnr)
     vim.keymap.set('n', '<space>f', function()
         vim.lsp.buf.format { async = true }
     end, opts)
-end)
+end})
 
-lsp.setup()
+local cmp = require('cmp')
+
+cmp.setup({
+  sources = {
+    {name = 'nvim_lsp'},
+  },
+  mapping = cmp.mapping.preset.insert({
+    -- Enter key confirms completion item
+    ['<CR>'] = cmp.mapping.confirm({select = false}),
+
+    -- Ctrl + space triggers completion menu
+    ['<C-Space>'] = cmp.mapping.complete(),
+  }),
+  snippet = {
+    expand = function(args)
+      require('luasnip').lsp_expand(args.body)
+    end,
+  },
+})
+
+local capabilities = require('cmp_nvim_lsp').default_capabilities()
+
+lspconfig.gopls.setup({
+  capabilities = capabilities,
+  settings = {
+    gopls = {
+      analyses = {
+        unusedparams = true,
+      },
+      staticcheck = true,
+      gofumpt = true,
+    },
+  },
+})
+
+lspconfig.clangd.setup({
+  capabilities = capabilities,
+  settings = {},
+})
+
+vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
+  vim.lsp.diagnostic.on_publish_diagnostics, {
+    update_in_insert = true,
+    signs = false,
+  }
+)
 
