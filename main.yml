@@ -1,9 +1,0 @@
----
-- name: "System | Setup"
-  hosts: localhost
-  vars:
-    ansible_become_password: wslpass
-  roles:
-    - nvim
-    - zsh
-    - tmux

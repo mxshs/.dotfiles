@@ -1,0 +1,117 @@
+{
+    "position": "top",
+    "spacing": 0,
+
+    "modules-left": [
+        "hyprland/workspaces",
+        "hyprland/submap",
+        "hyprland/window"
+    ],
+
+    "modules-right": [
+        "cpu",
+        "memory",
+        "disk",
+        "backlight",
+        "pulseaudio",
+        "battery",
+        "network",
+        "clock",
+        "power",
+        "idle_inhibitor",
+        "tray"
+    ],
+
+    "hyprland/window": {
+        "icon": true
+    },
+
+    "clock": {
+        "interval": 30,
+        "format": "{:%a, %d %b %Y | %H:%M %p}",
+        "tooltip-format": "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>"
+    },
+
+    "cpu": {
+        "interval": 1,
+        "format": "CPU: {usage}%",
+    },
+
+    "memory": {
+        "interval": 1,
+        "format": "Mem: {used:0.1f}G/{total:0.1f}G"
+    },
+
+    "disk": {
+        "interval": 30,
+        "unit": "GB",
+        "format": "Disk: {specific_used:0.1f}GB/{specific_total:0.1f}GB"
+    },
+
+    "backlight": {
+        "format": "{icon} {percent}%",
+        "format-icons": ["🔅", "🔆"]
+    },
+
+    "battery": {
+        "states": {
+            "warning": 30,
+            "critical": 15
+        },
+        "interval": 1,
+        "format": "{icon} {capacity}%",
+        "format-charging": "⚡ {capacity}%",
+        "format-icons": ["", "", "", "", ""]
+    },
+
+    "network": {
+        "format-wifi": " ({signalStrength}%) {essid}",
+        "format-ethernet": "{ipaddr}/{cidr} ",
+        "tooltip-format": "{ifname} via {gwaddr} ",
+        "format-linked": "{ifname} (No IP) ",
+        "format-disconnected": "Disconnected ⚠"
+    },
+
+    "pulseaudio": {
+        "format": "{icon} {volume}%",
+        "format-bluetooth": "{icon} {volume}%",
+        "format-muted": " {format_source}",
+        "format-source": " {volume}%",
+        "format-source-muted": "",
+        "format-icons": {
+            "headphone": "",
+            "hands-free": "",
+            "default": ["", "", ""]
+        },
+        "on-click": "pavucontrol"
+    },
+
+    "idle_inhibitor": {
+        "format": "{icon}",
+        "format-icons": {
+            "activated": "",
+            "deactivated": ""
+        }
+    },
+
+    "tray": {
+        "spacing": 10
+    },
+
+    "custom/left-arrow-dark": {
+        "format": "",
+        "tooltip": false
+    },
+    "custom/left-arrow-light": {
+        "format": "",
+        "tooltip": false
+    },
+    "custom/right-arrow-dark": {
+        "format": "",
+        "tooltip": false
+    },
+    "custom/right-arrow-light": {
+        "format": "",
+        "tooltip": false
+    }
+}

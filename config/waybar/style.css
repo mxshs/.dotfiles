@@ -1,0 +1,100 @@
+* {
+    font-family: FontAwesome, Iosevka;
+    font-size: 16px;
+	color: #dcdef1;
+    margin-top: 2px;
+    margin-left: 5px;
+    margin-right: 5px;
+    padding: 0px;
+    box-shadow: none;
+    text-shadow: none;
+    border-radius: 8px;
+}
+
+window#waybar {
+    background-color: rgba(0, 0, 0, 0);
+    transition: background-color 0.5s;
+}
+
+window#waybar.hidden {
+    opacity: 0.0;
+}
+
+#clock,
+#custom-power,
+#battery,
+#cpu,
+#memory,
+#disk,
+#backlight,
+#network,
+#pulseaudio,
+#tray,
+#mode,
+#idle_inhibitor,
+#keyboard-state,
+#scratchpad {
+    padding: 0px 8px;
+    background: #1a1a1a;
+    opacity: 0.6;
+    color: #ffffff;
+}
+
+#battery.charging{
+    background-color: #b5b4e2;
+}
+
+#battery.critical:not(.charging) {
+    background-color: #b54f4f;
+    animation: blink 0.5s linear infinite alternate;
+}
+
+@keyframes blink {
+    to {
+        background-color: #ffffff;
+        color: #3b3f51;
+    }
+}
+
+#network.disconnected {
+    background-color: #b54f4f;
+}
+
+#pulseaudio.muted {
+    background-color: #3b3f51;
+    color: #b5b4e2;
+}
+
+#tray {
+    background-color: #b5b4e2;
+    color: #282a36;
+}
+
+#tray>.passive {
+    -gtk-icon-effect: dim;
+    color: #6272a4;
+}
+
+#tray>.needs-attention {
+    background-color: #ff5555;
+    color: #ffffff;
+}
+
+#idle_inhibitor.activated {
+    background-color: #b5b4e2; 
+    color: #3b3f51;
+}
+
+#workspaces button,
+#mode {
+    padding: 0px 8px;
+    background-color: #1a1a1a;
+    color: #ffffff;
+    border-radius: 8px 0 0 8px;
+}
+
+#workspaces button:hover,
+#workspaces button.active,
+#workspaces button.urgent{
+    background-color: #EA6A00;
+}
